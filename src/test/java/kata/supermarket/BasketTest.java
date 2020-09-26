@@ -52,6 +52,34 @@ class BasketTest {
         return Arguments.of("a single item priced per unit", "0.49", Collections.singleton(aPintOfMilk()));
     }
 
+    private static Arguments fourItemsWithBuyOneGetOneFreeDiscount() {
+        return Arguments.of("four items with buy one get one free discount", "2.53",
+                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk(), aPackOfDigestives()));
+    }
+
+    private static Arguments fourItemsWithBuyTwoItemsForOnePoundDiscount() {
+        return Arguments.of("four items with buy two items for pne pound discount", "3.04",
+                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()));
+    }
+
+    private static Arguments fourItemsWithThreeForThePriceOfTwoDiscount() {
+        return Arguments.of("four items with three for the price of two discount", "3.59",
+                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()));
+    }
+
+    private static Arguments multipleItemsPricedByWeightWithOneKiloOfVegetablesForHalfPrice() {
+        return Arguments.of("multiple items priced by weight with one kilo of vegetables for half price", "2.60",
+                Arrays.asList(
+                        twoFiftyGramsOfAmericanSweets(),
+                        twoHundredGramsOfPickAndMix(),
+                        twoFiftyGramsGramsOfVegetables(),
+                        twoFiftyGramsGramsOfVegetables(),
+                        twoFiftyGramsGramsOfVegetables(),
+                        twoFiftyGramsGramsOfVegetables(),
+                        twoFiftyGramsGramsOfVegetables())
+        );
+    }
+
     private static Arguments noItems() {
         return Arguments.of("no items", "0.00", Collections.emptyList());
     }
@@ -78,5 +106,13 @@ class BasketTest {
 
     private static Item twoHundredGramsOfPickAndMix() {
         return aKiloOfPickAndMix().weighing(new BigDecimal(".2"));
+    }
+
+    private static WeighedProduct aKiloOfVegetables() {
+        return new WeighedProduct(new BigDecimal("1.00"));
+    }
+
+    private static Item twoFiftyGramsGramsOfVegetables() {
+        return aKiloOfPickAndMix().weighing(new BigDecimal(".25"));
     }
 }
