@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BuyXGetOneFreeDiscountTest {
 
-    @DisplayName("Buy One Get One Free Discount provides discounted value...")
+    @DisplayName("Buy X Get One Free Discount provides discounted value...")
     @MethodSource
     @ParameterizedTest(name = "{0}")
     void discountSchemeProvidesDiscountedValue(String description, String expectedTotal, Iterable<Item> items, Discount discount) {
