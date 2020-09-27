@@ -34,7 +34,9 @@ class BasketTest {
                 multipleItemsPricedByWeight(),
                 fourItemsWithBuyOneGetOneFreeDiscount(),
                 fourItemsWithBuyTwoItemsForOnePoundDiscount(),
-                fourItemsWithThreeForThePriceOfTwoDiscount()
+                fourItemsWithThreeForThePriceOfTwoDiscount(),
+                //multipleItemsPricedByWeightWithOneKiloOfVegetablesForHalfPrice(),
+                fiveItemsWithMultipleDiscountSchemes()
         );
     }
 
@@ -70,22 +72,30 @@ class BasketTest {
                 Arrays.asList(buyTwoForOnePoundDiscount()));
     }
 
+    private static Arguments fiveItemsWithMultipleDiscountSchemes() {
+        return Arguments.of("five items with multiple discount schemes", "3.04",
+                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk(), aPintOfMilk()),
+                Arrays.asList( buyOneGetOneFreeDiscount(), buyTwoForOnePoundDiscount()));
+        //Collections.emptyList());
+    }
+
+
     private static Arguments fourItemsWithThreeForThePriceOfTwoDiscount() {
         return Arguments.of("four items with three for the price of two discount", "3.59",
                 Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()),
                 Arrays.asList( buyTwoGetOneFreeDiscount()));
     }
-
     private static Arguments multipleItemsPricedByWeightWithOneKiloOfVegetablesForHalfPrice() {
-        return Arguments.of("multiple items priced by weight with one kilo of vegetables for half price", "2.60",
+        return Arguments.of("multiple items priced by weight with one kilo of vegetables for half price", "2.85",
                 Arrays.asList(
                         twoFiftyGramsOfAmericanSweets(),
                         twoHundredGramsOfPickAndMix(),
-                        twoFiftyGramsGramsOfVegetables(),
-                        twoFiftyGramsGramsOfVegetables(),
-                        twoFiftyGramsGramsOfVegetables(),
-                        twoFiftyGramsGramsOfVegetables(),
-                        twoFiftyGramsGramsOfVegetables())
+                        twoFiftyGramsOfCarrots(),
+                        twoFiftyGramsOfOnions(),
+                        twoFiftyGramsOfCarrots(),
+                        twoFiftyGramsOfOnions(),
+                        twoFiftyGramsOfCarrots()),
+                Collections.emptyList()
         );
     }
 
@@ -113,16 +123,24 @@ class BasketTest {
         return new WeighedProduct("004", "Pick and Mix", new BigDecimal("2.99"));
     }
 
+    private static WeighedProduct aKiloOfCarrots() {
+        return new WeighedProduct("105", "Carrot", new BigDecimal("1.00"));
+    }
+
+    private static WeighedProduct aKiloOfOnions() {
+        return new WeighedProduct("106", "Onion", new BigDecimal("2.00"));
+    }
+
     private static Item twoHundredGramsOfPickAndMix() {
         return aKiloOfPickAndMix().weighing(new BigDecimal(".2"));
     }
 
-    private static WeighedProduct aKiloOfVegetables() {
-        return new WeighedProduct("005", "Vegetables", new BigDecimal("1.00"));
-    }
 
-    private static Item twoFiftyGramsGramsOfVegetables() {
-        return aKiloOfPickAndMix().weighing(new BigDecimal(".25"));
+    private static Item twoFiftyGramsOfCarrots() {
+        return aKiloOfCarrots().weighing(new BigDecimal(".25"));
+    }
+    private static Item twoFiftyGramsOfOnions() {
+        return aKiloOfOnions().weighing(new BigDecimal(".25"));
     }
 
     //Discount schemes
