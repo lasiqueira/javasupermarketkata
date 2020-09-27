@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
@@ -31,7 +32,8 @@ class BasketTest {
                 multipleItemsPricedPerUnit(),
                 aSingleItemPricedByWeight(),
                 multipleItemsPricedByWeight(),
-                fourItemsWithBuyOneGetOneFreeDiscount()
+                fourItemsWithBuyOneGetOneFreeDiscount(),
+                fourItemsWithBuyTwoItemsForOnePoundDiscount()
         );
     }
 
@@ -62,8 +64,9 @@ class BasketTest {
     }
 
     private static Arguments fourItemsWithBuyTwoItemsForOnePoundDiscount() {
-        return Arguments.of("four items with buy two items for pne pound discount", "3.04",
-                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()));
+        return Arguments.of("four items with buy two items for one pound discount", "3.04",
+                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()),
+                Arrays.asList(buyTwoForOnePoundDiscount()));
     }
 
     private static Arguments fourItemsWithThreeForThePriceOfTwoDiscount() {
@@ -119,5 +122,8 @@ class BasketTest {
     private static Item twoFiftyGramsGramsOfVegetables() {
         return aKiloOfPickAndMix().weighing(new BigDecimal(".25"));
     }
-    private static Discount buyOneGetOneFreeDiscount(){ return  new BuyOneGetOneFreeDiscount("001");}
+
+    //Discount schemes
+    private static Discount buyOneGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("001", 2);}
+    private static Discount buyTwoForOnePoundDiscount(){ return  new BuyXForYPoundDiscount("002", 2, BigDecimal.ONE.setScale(2, RoundingMode.HALF_UP));}
 }

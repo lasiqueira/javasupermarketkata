@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,13 +15,13 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BuyOneGetOneFreeDiscountTest {
+public class BuyXGetOneFreeDiscountTest {
 
     @DisplayName("Buy One Get One Free Discount provides discounted value...")
     @MethodSource
     @ParameterizedTest(name = "{0}")
     void discountSchemeProvidesDiscountedValue(String description, String expectedTotal, Iterable<Item> items) {
-        Discount discount = new BuyOneGetOneFreeDiscount("001");
+        Discount discount = new BuyXGetOneFreeDiscount("001", 2);
         List<Item> itemList = new ArrayList<>();
         items.forEach(itemList::add);
         assertEquals(new BigDecimal(expectedTotal), discount.getDiscount(itemList));
@@ -50,7 +49,7 @@ public class BuyOneGetOneFreeDiscountTest {
     }
 
     private static Arguments threeItemsWithBuyOneGetOneFreeDiscount() {
-        return Arguments.of("four items with buy one get one free discount", "0.49",
+        return Arguments.of("three items with buy one get one free discount", "0.49",
                 Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk()));
     }
 
@@ -59,15 +58,6 @@ public class BuyOneGetOneFreeDiscountTest {
                 Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk(), aPintOfMilk()));
     }
 
-    private static Arguments fourItemsWithBuyTwoItemsForOnePoundDiscount() {
-        return Arguments.of("four items with buy two items for pne pound discount", "3.04",
-                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()));
-    }
-
-    private static Arguments fourItemsWithThreeForThePriceOfTwoDiscount() {
-        return Arguments.of("four items with three for the price of two discount", "3.59",
-                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()));
-    }
 
 
     private static Arguments noItems() {
