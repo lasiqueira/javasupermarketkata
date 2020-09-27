@@ -20,8 +20,7 @@ public class BuyXGetOneFreeDiscountTest {
     @DisplayName("Buy One Get One Free Discount provides discounted value...")
     @MethodSource
     @ParameterizedTest(name = "{0}")
-    void discountSchemeProvidesDiscountedValue(String description, String expectedTotal, Iterable<Item> items) {
-        Discount discount = new BuyXGetOneFreeDiscount("001", 2);
+    void discountSchemeProvidesDiscountedValue(String description, String expectedTotal, Iterable<Item> items, Discount discount) {
         List<Item> itemList = new ArrayList<>();
         items.forEach(itemList::add);
         assertEquals(new BigDecimal(expectedTotal), discount.getDiscount(itemList));
@@ -33,7 +32,9 @@ public class BuyXGetOneFreeDiscountTest {
                 aSingleItemPricedPerUnit(),
                 multipleItemsPricedPerUnit(),
                 threeItemsWithBuyOneGetOneFreeDiscount(),
-                fourItemsWithBuyOneGetOneFreeDiscount()
+                fourItemsWithBuyOneGetOneFreeDiscount(),
+                threeItemsWithBuyTwoGetOneFreeDiscount(),
+                fourItemsWithBuyTwoGetOneFreeDiscount()
         );
     }
 
@@ -41,27 +42,37 @@ public class BuyXGetOneFreeDiscountTest {
 
     private static Arguments multipleItemsPricedPerUnit() {
         return Arguments.of("multiple items priced per unit", "0.00",
-                Arrays.asList(aPackOfDigestives(), aPintOfMilk()));
+                Arrays.asList(aPackOfDigestives(), aPintOfMilk()),
+                buyOneGetOneFreeDiscount());
     }
 
     private static Arguments aSingleItemPricedPerUnit() {
-        return Arguments.of("a single item priced per unit", "0.00", Collections.singleton(aPintOfMilk()));
+        return Arguments.of("a single item priced per unit", "0.00", Collections.singleton(aPintOfMilk()), buyOneGetOneFreeDiscount());
     }
 
     private static Arguments threeItemsWithBuyOneGetOneFreeDiscount() {
         return Arguments.of("three items with buy one get one free discount", "0.49",
-                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk()));
+                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk()), buyOneGetOneFreeDiscount());
     }
 
     private static Arguments fourItemsWithBuyOneGetOneFreeDiscount() {
         return Arguments.of("four items with buy one get one free discount", "0.98",
-                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk(), aPintOfMilk()));
+                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk(), aPintOfMilk()), buyOneGetOneFreeDiscount());
+    }
+
+    private static Arguments threeItemsWithBuyTwoGetOneFreeDiscount() {
+        return Arguments.of("three items with buy two get one free discount", "0.49",
+                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk()), buyTwoGetOneFreeDiscount());
+    }
+
+    private static Arguments fourItemsWithBuyTwoGetOneFreeDiscount() {
+        return Arguments.of("four items with buy two get one free discount", "0.49",
+                Arrays.asList(aPintOfMilk(), aPintOfMilk(), aPintOfMilk(), aPintOfMilk()), buyTwoGetOneFreeDiscount());
     }
 
 
-
     private static Arguments noItems() {
-        return Arguments.of("no items", "0.00", Collections.emptyList());
+        return Arguments.of("no items", "0.00", Collections.emptyList() , buyOneGetOneFreeDiscount());
     }
 
     private static Item aPintOfMilk() {
@@ -71,4 +82,8 @@ public class BuyXGetOneFreeDiscountTest {
     private static Item aPackOfDigestives() {
         return new Product("002", "Digestives", new BigDecimal("1.55")).oneOf();
     }
+
+    private static Discount buyOneGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("001", 2);}
+
+    private static Discount buyTwoGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("001", 3);}
 }

@@ -33,7 +33,8 @@ class BasketTest {
                 aSingleItemPricedByWeight(),
                 multipleItemsPricedByWeight(),
                 fourItemsWithBuyOneGetOneFreeDiscount(),
-                fourItemsWithBuyTwoItemsForOnePoundDiscount()
+                fourItemsWithBuyTwoItemsForOnePoundDiscount(),
+                fourItemsWithThreeForThePriceOfTwoDiscount()
         );
     }
 
@@ -71,7 +72,8 @@ class BasketTest {
 
     private static Arguments fourItemsWithThreeForThePriceOfTwoDiscount() {
         return Arguments.of("four items with three for the price of two discount", "3.59",
-                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()));
+                Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()),
+                Arrays.asList( buyTwoGetOneFreeDiscount()));
     }
 
     private static Arguments multipleItemsPricedByWeightWithOneKiloOfVegetablesForHalfPrice() {
@@ -126,4 +128,5 @@ class BasketTest {
     //Discount schemes
     private static Discount buyOneGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("001", 2);}
     private static Discount buyTwoForOnePoundDiscount(){ return  new BuyXForYPoundDiscount("002", 2, BigDecimal.ONE.setScale(2, RoundingMode.HALF_UP));}
+    private static Discount buyTwoGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("002", 3);}
 }
