@@ -18,4 +18,8 @@ public class ItemByWeight implements Item {
 
     public String code(){return product.code();}
     public String name(){return product.name();}
+
+    public BigDecimal getWeightInKilos(){
+        return weightInKilos;
+    }
 }

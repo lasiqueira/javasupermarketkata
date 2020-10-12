@@ -29,17 +29,19 @@ public class BuyXKilosOfYGroupForHalfDiscountTest {
 
     static Stream<Arguments> discountSchemeProvidesDiscountedValue() {
         return Stream.of(
-                noItems()
+                noItems(),
+                aKiloOfCarrotsItem()
 
         );
     }
-
-//TODO implement tests
 
     private static Arguments noItems() {
         return Arguments.of("no items", "0.00", Collections.emptyList(), BuyOneKiloOfVegetableGroupForHalfDiscount());
     }
 
+    private static Arguments aKiloOfCarrotsItem() {
+        return Arguments.of("A kilo of carrots", "0.50", Arrays.asList(oneKiloOfCarrots()), BuyOneKiloOfVegetableGroupForHalfDiscount());
+    }
     private static Item aPintOfMilk() {
         return new Product("001", "Milk", new BigDecimal("0.49")).oneOf();
     }
@@ -49,7 +51,14 @@ public class BuyXKilosOfYGroupForHalfDiscountTest {
     }
 
 
-    private static Discount BuyOneKiloOfVegetableGroupForHalfDiscount(){ return  new BuyXKilosOfYGroupForHalfDiscount("1",  BigDecimal.ONE.setScale(2, RoundingMode.HALF_UP));}
+    private static Discount BuyOneKiloOfVegetableGroupForHalfDiscount(){ return  new BuyXKilosOfYGroupForHalfDiscount("105",  BigDecimal.ONE.setScale(2, RoundingMode.HALF_UP));}
 
+    private static WeighedProduct aKiloOfCarrots() {
+        return new WeighedProduct("105", "Carrot", new BigDecimal("1.00"));
+    }
+
+    private static Item oneKiloOfCarrots() {
+        return aKiloOfCarrots().weighing(new BigDecimal("1.00"));
+    }
 
 }

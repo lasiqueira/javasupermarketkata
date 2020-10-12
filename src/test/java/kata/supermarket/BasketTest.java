@@ -35,7 +35,7 @@ class BasketTest {
                 fourItemsWithBuyOneGetOneFreeDiscount(),
                 fourItemsWithBuyTwoItemsForOnePoundDiscount(),
                 fourItemsWithThreeForThePriceOfTwoDiscount(),
-                //multipleItemsPricedByWeightWithOneKiloOfVegetablesForHalfPrice(),
+                multipleItemsPricedByWeightWithOneKiloOfCarrotsForHalfPrice(),
                 fiveItemsWithMultipleDiscountSchemes()
         );
     }
@@ -85,17 +85,17 @@ class BasketTest {
                 Arrays.asList(aPackOfDigestives(), aPackOfDigestives(), aPackOfDigestives(), aPintOfMilk()),
                 Arrays.asList( buyTwoGetOneFreeDiscount()));
     }
-    private static Arguments multipleItemsPricedByWeightWithOneKiloOfVegetablesForHalfPrice() {
-        return Arguments.of("multiple items priced by weight with one kilo of vegetables for half price", "2.85",
+    private static Arguments multipleItemsPricedByWeightWithOneKiloOfCarrotsForHalfPrice() {
+        return Arguments.of("multiple items priced by weight with one kilo of vegetables for half price", "1.50",
                 Arrays.asList(
-                        twoFiftyGramsOfAmericanSweets(),
-                        twoHundredGramsOfPickAndMix(),
                         twoFiftyGramsOfCarrots(),
                         twoFiftyGramsOfOnions(),
                         twoFiftyGramsOfCarrots(),
                         twoFiftyGramsOfOnions(),
-                        twoFiftyGramsOfCarrots()),
-                Collections.emptyList()
+                        twoFiftyGramsOfCarrots(),
+                        twoFiftyGramsOfCarrots()
+                        ),
+                Arrays.asList(BuyOneKiloOfVegetableGroupForHalfDiscount())
         );
     }
 
@@ -147,4 +147,5 @@ class BasketTest {
     private static Discount buyOneGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("001", 2);}
     private static Discount buyTwoForOnePoundDiscount(){ return  new BuyXForYPoundDiscount("002", 2, BigDecimal.ONE.setScale(2, RoundingMode.HALF_UP));}
     private static Discount buyTwoGetOneFreeDiscount(){ return  new BuyXGetOneFreeDiscount("002", 3);}
+    private static Discount BuyOneKiloOfVegetableGroupForHalfDiscount(){ return  new BuyXKilosOfYGroupForHalfDiscount("105",  BigDecimal.ONE.setScale(2, RoundingMode.HALF_UP));}
 }

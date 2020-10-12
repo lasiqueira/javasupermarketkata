@@ -16,15 +16,26 @@ public class BuyXKilosOfYGroupForHalfDiscount implements Discount{
 
     @Override
     public BigDecimal getDiscount(List<Item> items) {
-        List<BigDecimal> discountedList = filterDiscountedItemPrice(items);
-        //TODO implement a way to access the weight of the item in order to calculate the discount
-        return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal discount = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+
+        List<ItemByWeight> weightedItemList = filterDiscountedItem(items);
+        BigDecimal totalWeight = weightedItemList.stream()
+                .map(ItemByWeight::getWeightInKilos)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if(totalWeight.compareTo(weightInKilos) >= 0){
+            discount = weightedItemList.stream()
+                    .map(ItemByWeight::price)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                    .divide(new BigDecimal(2)).setScale(2, RoundingMode.HALF_UP);
+        }
+        return discount;
 
     }
-    private List<BigDecimal> filterDiscountedItemPrice(List<Item> items){
+    private List<ItemByWeight> filterDiscountedItem(List<Item> items){
         return items.stream()
-                .filter(item -> item.code().startsWith(productGroup))
-                .map(Item::price)
+                .filter(item -> item.code().equals(productGroup))
+                .map(item -> (ItemByWeight) item)
                 .collect(Collectors.toList());
     }
 }
