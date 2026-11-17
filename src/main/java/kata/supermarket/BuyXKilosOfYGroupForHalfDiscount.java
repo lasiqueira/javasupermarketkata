@@ -23,11 +23,13 @@ public class BuyXKilosOfYGroupForHalfDiscount implements Discount{
                 .map(ItemByWeight::getWeightInKilos)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if(totalWeight.compareTo(weightInKilos) >= 0){
+        if(totalWeight.signum() > 0 && totalWeight.compareTo(weightInKilos) >= 0){
+            //only weightInKilos gets the half price, any weight above it is full price
             discount = weightedItemList.stream()
                     .map(ItemByWeight::price)
                     .reduce(BigDecimal.ZERO, BigDecimal::add)
-                    .divide(new BigDecimal(2)).setScale(2, RoundingMode.HALF_UP);
+                    .multiply(weightInKilos)
+                    .divide(totalWeight.multiply(new BigDecimal(2)), 2, RoundingMode.HALF_UP);
         }
         return discount;
 
